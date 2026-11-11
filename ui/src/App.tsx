@@ -177,9 +177,15 @@ export default function App() {
     setStatus("loading");
     setAnswer(null);
     try {
-      const { data } = await axios.post<Answer>("/api/ask", {
-        question: trimmed,
-      });
+      const { data } = await axios.post<Answer>(
+        "/api/ask",
+        {
+          question: trimmed,
+        },
+        {
+          timeout: 45000,
+        },
+      );
       setAnswer(data);
       setStatus("done");
       window.scrollTo({ top: 0 });

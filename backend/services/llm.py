@@ -10,6 +10,8 @@ MODEL = os.getenv("LLM_MODEL", "gpt-4o-mini")
 client = OpenAI(
     base_url=os.getenv("LLM_BASE_URL", "https://api.openai.com/v1"),
     api_key=os.getenv("LLM_API_KEY", "missing"),
+    max_retries=0,
+    timeout=30,
 )
 
 SYSTEM_PROMPT = """You answer questions for shop-floor supervisors using ONLY the numbered excerpts provided.
