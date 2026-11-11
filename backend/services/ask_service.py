@@ -1,6 +1,7 @@
 import re
 from services.llm import ask_llm
 from services.retrieval import documents, search
+import time
 
 SAFETY_RE = re.compile(
     r"lock\s?out|tag\s?out|\bloto\b|isolat|de-?energi|stored (energy|pressure)|zero energy|accumulator",
@@ -60,13 +61,17 @@ def is_safety_critical(question, used_chunks):
 
 
 def process_request(question):
+    t0 = time.perf_counter()
     hits = search(question)
+    t1 = time.perf_counter()
     best = hits[0][1] if hits else 0.0
     print(f"[ask] best_score={best:.2f} question={question!r}")
     if not hits:
         return not_found()
 
     result = ask_llm(question, hits)
+    t2 = time.perf_counter()
+    print(f"[timing] search={t1 - t0:.2f}s llm={t2 - t1:.2f}s")
     if not result.get("found"):
         return not_found()
 

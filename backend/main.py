@@ -10,3 +10,8 @@ app = FastAPI(title="Shopfloor Copilot")
 app.include_router(health.router, prefix="/api")
 app.include_router(ask.router, prefix="/api")
 app.mount("/pdfs", StaticFiles(directory=BASE_DIR / "data"), name="pdfs")
+
+UI_DIST = BASE_DIR.parent / "ui" / "dist"
+
+if UI_DIST.exists():
+    app.mount("/", StaticFiles(directory=UI_DIST, html=True), name="ui")

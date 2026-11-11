@@ -54,6 +54,31 @@ function sourcePages(source: Source) {
     : `pages ${source.page} to ${source.page_end}`;
 }
 
+function SampleList({
+  exclude,
+  onPick,
+}: {
+  exclude?: string;
+  onPick: (q: string) => void;
+}) {
+  return (
+    <div className="grid gap-3">
+      {sampleQuestions
+        .filter((q) => q !== exclude)
+        .map((sample) => (
+          <Button
+            key={sample}
+            variant="outline"
+            className="h-auto min-h-14 justify-start whitespace-normal bg-background px-4 py-3 text-left text-base font-normal"
+            onClick={() => onPick(sample)}
+          >
+            {sample}
+          </Button>
+        ))}
+    </div>
+  );
+}
+
 function SourceCard({ source }: { source: Source }) {
   return (
     <Card>
@@ -174,6 +199,15 @@ export default function App() {
     askQuestion(question);
   }
 
+  function goBack() {
+    setStatus("idle");
+    setAnswer(null);
+    setQuestion("");
+    setAskedQuestion("");
+    setErrorMessage("");
+    window.scrollTo({ top: 0 });
+  }
+
   return (
     <div className="flex min-h-dvh flex-col bg-muted/40">
       <main className="mx-auto w-full max-w-2xl flex-1 space-y-5 px-4 pb-6 pt-6">
@@ -187,23 +221,19 @@ export default function App() {
           </p>
         </header>
 
-        {status === "idle" && (
-          <div className="grid gap-3">
-            {sampleQuestions.map((sample) => (
-              <Button
-                key={sample}
-                variant="outline"
-                className="h-auto min-h-14 justify-start whitespace-normal bg-background px-4 py-3 text-left text-base font-normal"
-                onClick={() => askQuestion(sample)}
-              >
-                {sample}
-              </Button>
-            ))}
-          </div>
-        )}
+        {status === "idle" && <SampleList onPick={askQuestion} />}
 
         {status !== "idle" && (
-          <p className="text-muted-foreground">{askedQuestion}</p>
+          <div className="space-y-1">
+            <Button
+              variant="ghost"
+              className="-ml-3 min-h-11 text-base"
+              onClick={goBack}
+            >
+              ← Back to questions
+            </Button>
+            <p className="text-muted-foreground">{askedQuestion}</p>
+          </div>
         )}
 
         <div aria-live="polite">
@@ -215,6 +245,15 @@ export default function App() {
           )}
           {status === "done" && answer && <AnswerView data={answer} />}
         </div>
+
+        {(status === "done" || status === "error") && (
+          <div className="space-y-3 pt-2">
+            <h2 className="text-lg font-semibold">
+              Other questions you can ask
+            </h2>
+            <SampleList exclude={askedQuestion} onPick={askQuestion} />
+          </div>
+        )}
       </main>
 
       <div className="sticky bottom-0 border-t bg-background px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3">
