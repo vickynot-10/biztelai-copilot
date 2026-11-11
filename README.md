@@ -1,5 +1,9 @@
 # BiztelAI Shop-Floor Copilot
 
+**Demo video (2-3 min):** [Watch the screen recording](https://drive.google.com/file/d/1Yoba3R6gSav4pc9xHbi7OcbDj5qcbGcF/view?usp=drive_link)
+
+**Github Repository Link:** [Click here](https://github.com/vickynot-10/biztelai-copilot)
+
 A simple RAG app for manufacturing supervisors. A supervisor asks a question (from a laptop, phone or tablet) and gets an answer **only from the plant's SOPs and manuals**, with the source document, revision, section and page shown. If the answer is not in the documents, the app says so instead of guessing.
 
 ## Features
@@ -14,7 +18,7 @@ A simple RAG app for manufacturing supervisors. A supervisor asks a question (fr
 
 ## Tech stack
 
-- **Backend:** FastAPI, PyMuPDF (PDF parsing), sentence-transformers (embeddings and retrieval), NumPy
+- **Backend:** FastAPI, PyMuPDF (PDF parsing), rank-bm25 (keyword retrieval), scikit-learn (stopword list)
 - **LLM:** Gemini through its OpenAI-compatible endpoint (`openai` Python SDK)
 - **Frontend:** React, TypeScript, Vite, Tailwind, shadcn/ui
 
@@ -66,8 +70,8 @@ pip install -r requirements.txt
 fastapi>=0.110
 uvicorn[standard]>=0.29
 pymupdf>=1.24
-sentence-transformers>=2.7
-numpy>=1.26
+rank-bm25>=0.2.2
+scikit-learn>=1.4
 openai>=1.30
 python-dotenv>=1.0
 ```
