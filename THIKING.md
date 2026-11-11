@@ -141,4 +141,4 @@ A wrong answer on a quality check is costly. A wrong answer on a lockout can inj
 
 ### Biggest challenge: opening the app from a phone
 
-The app ran on the laptop, but the phone could not open it. I was connected through my phone's hotspot, and a hotspot phone usually cannot reach its own clients. The page just kept loading. The laptop's address also depends on the network it is on, and Windows Firewall blocks incoming connections until the port is allowed. I found the laptop's real address with `ipconfig`, allowed port 8000 in the firewall, and tried VS Code port forwarding as a fallback, which returned a 403 on the phone until the port was made public. [FILL: what finally worked, for example a second device on the same hotspot, or the public forwarded address.] If I deployed this for real, I would put it on a server inside the plant network with a fixed address, so it would not depend on a laptop and a changing Wi-Fi address.
+- Runs on the laptop and can be opened from a phone. For my demo I used VS Code port forwarding so the phone could reach it
